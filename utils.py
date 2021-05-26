@@ -53,13 +53,19 @@ def condition_sum(mask, M):
 def affine_transform_matrix(di, dj, dθ, h, w):
     R = [[0]*h*w for i in range(h*w)]
     T = [[0]*h*w for i in range(h*w)]
-    for i in range(h):
-        for j in range(w):
-            for ii in range(h):
-                for jj in range(w):
-                    ci, cj = h//2, w//2
-                    if ii-ci==int(m.cos(dθ)*(i-ci)-m.sin(dθ)*(j-cj)) and jj-cj==int(m.sin(dθ)*(i-ci)+m.cos(dθ)*(j-cj)):
+    ci, cj = h//2, w//2
+    for ii in range(h):
+        for jj in range(w):
+            for i in range(h):
+                for j in range(w):
+                    res = dθ % m.pi/2
+                    tolerance = abs(m.cos(res)) if res > 0 else 1e-4
+                    if abs((ii-ci) - (m.cos(dθ)*(i-ci)-m.sin(dθ)*(j-cj))) <=tolerance and abs((jj-cj) - (m.sin(dθ)*(i-ci)+m.cos(dθ)*(j-cj))) <=tolerance:
                         R[ii*w+jj][i*w+j]=1
+                        break
+                else:
+                    continue
+                break
     for i in range(h):
         for j in range(w):
             for ii in range(h):

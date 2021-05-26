@@ -2,8 +2,6 @@ from ortools.linear_solver import pywraplp
 from utils import *
 from data import *
 import math as m
-from numpy import arange
-import time
 
 
 solver = pywraplp.Solver.CreateSolver('SCIP')
@@ -11,12 +9,12 @@ h = len(I0)
 w = len(I0[0])
 di_step = 1
 dj_step = 1
-dθ_step = m.pi*0.5
+dθ_step = m.pi*0.25
 
 T = {}
 for di in range(-h//2, h//2, di_step):
     for dj in range(-w//2, w//2, dj_step):
-        for dθ in arange(0.0, m.pi*2, dθ_step):
+        for dθ in [n*dθ_step for n in range(int(m.pi*2/dθ_step))]:
             T[di, dj, dθ] = affine_transform_matrix(di, dj, dθ, h, w)
 
 var = []
@@ -27,7 +25,7 @@ for k in range(len(Is)):
     xs = []
     for di in range(-h//2, h//2, di_step):
         for dj in range(-w//2, w//2, dj_step):
-            for dθ in arange(0.0, m.pi*2, dθ_step):
+            for dθ in [n*dθ_step for n in range(int(m.pi*2/dθ_step))]:
                 x = solver.IntVar(0.0, 1.0, str(k)+','+str(di)+','+str(dj)+','+"{:.2f}".format(dθ))
                 xs.append(x)
                 var.append(x)
