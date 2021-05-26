@@ -39,7 +39,7 @@ for k in range(len(Is)):
 del T
 
 I_col = matsum(Ms)
-lessthan(I_col, 1, solver)
+lesseq(I_col, 1, solver)
 
 I_mat = reshape(I_col, h, w)
 J = condition_sum(mask, I_mat)

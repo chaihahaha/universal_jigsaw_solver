@@ -7,7 +7,7 @@ def matmul(X, Y):
     assert wx==hy
     return [[sum([X[i][k] * Y[k][j] for k in range(wx)]) for j in range(wy)] for i in range(hx)]
 
-def lessthan(M, n, solver):
+def lesseq(M, n, solver):
     h = len(M)
     w = len(M[0])
     for i in range(h):
